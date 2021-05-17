@@ -1,13 +1,13 @@
 [![Travis][travisimg]][travisurl]
-[![AppVeyor][appveyorimg]][appveyorurl]
 [![GoDoc][docimg]][docurl]
+[![AppVeyor][appveyorimg]][appveyorurl]
 
-[travisimg]:   https://travis-ci.org/karalabe/hid.svg?branch=master
-[travisurl]:   https://travis-ci.org/karalabe/hid
-[appveyorimg]: https://ci.appveyor.com/api/projects/status/plroy54odykb0ch3/branch/master?svg=true
-[appveyorurl]: https://ci.appveyor.com/project/karalabe/hid
-[docimg]:      https://godoc.org/github.com/karalabe/hid?status.svg
-[docurl]:      https://godoc.org/github.com/karalabe/hid
+[travisimg]:   https://travis-ci.org/Zondax/hid.svg?branch=master
+[travisurl]:   https://travis-ci.org/Zondax/hid
+[appveyorimg]: https://ci.appveyor.com/api/projects/status/8lngogiq0dhk78hh/branch/master?svg=true
+[appveyorurl]: https://ci.appveyor.com/project/Zondax/hid
+[docimg]:      https://pkg.go.dev/badge/github.com/Zondax/hid
+[docurl]:      https://pkg.go.dev/github.com/Zondax/hid
 
 # Gopher Interface Devices (USB HID)
 
@@ -15,14 +15,21 @@ The `hid` package is a cross platform library for accessing and communicating wi
 Devices (HID). It is an alternative package to [`gousb`](https://github.com/karalabe/gousb) for use
 cases where devices support this ligher mode of operation (e.g. input devices, hardware crypto wallets).
 
-The package wraps [`hidapi`](https://github.com/signal11/hidapi) for accessing OS specific USB HID APIs
+The package wraps [`hidapi`](https://github.com/libusb/hidapi) for accessing OS specific USB HID APIs
 directly instead of using low level USB constructs, which might have permission issues on some platforms.
-On Linux the package also wraps [`libusb`](https://github.com/libusb/libusb). Both of these dependencies
-are vendored directly into the repository and wrapped using CGO, making the `hid` package self-contained
-and go-gettable.
+On Linux the package uses either [`libusb`](https://github.com/libusb/libusb) (default) or `hidraw` as backend.
+All of these dependencies are vendored directly into the repository and wrapped using CGO,
+making the `hid` package self-contained and go-gettable.
 
 Supported platforms at the moment are Linux, macOS and Windows (exclude constraints are also specified
 for Android and iOS to allow smoother vendoring into cross platform projects).
+
+## Libusb backend selection (linux only)
+
+If nothing is specified, `libusb` is used as backend for `hidapi`. To use the `hidraw` backend, build it with
+```
+go build -tags hidraw
+```
 
 ## Cross-compiling
 
@@ -45,8 +52,8 @@ such, `gowchar` was also vendored in inline (copyright headers and origins prese
 
 The components of `hid` are licensed as such:
 
- * `hidapi` is released under the [3-clause BSD](https://github.com/signal11/hidapi/blob/master/LICENSE-bsd.txt) license.
- * `libusb` is released under the [GNU LGPL 2.1](https://github.com/libusb/libusb/blob/master/COPYING)license.
+ * `hidapi` is released under the [GNU LGPL 3/3-clause BSD/HIDAPI](https://github.com/libusb/hidapi/blob/master/LICENSE.txt) license.
+ * `libusb` is released under the [GNU LGPL 2.1](https://github.com/libusb/libusb/blob/master/COPYING) license.
  * `go.hid` is released under the [2-clause BSD](https://github.com/GeertJohan/go.hid/blob/master/LICENSE) license.
  * `gowchar` is released under the [3-clause BSD](https://github.com/orofarne/gowchar/blob/master/LICENSE) license.
 
